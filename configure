@@ -569,6 +569,7 @@ ac_unique_file="automake.in"
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 sh_errexit_works
+AM_TEST_RUNNER_SHELL
 FGREP
 EGREP
 GREP
@@ -2815,6 +2816,11 @@ fi
 $as_echo "$ac_cv_path_FGREP" >&6; }
  FGREP="$ac_cv_path_FGREP"
 
+
+
+# Shell used to run our test scripts.  The same as $SHELL/$CONFIG_SHELL
+# for the moment.
+AM_TEST_RUNNER_SHELL=$SHELL
 
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $SHELL has working 'set -e' with exit trap" >&5

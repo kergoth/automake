@@ -1,3 +1,25 @@
+2011-10-17  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
+	tests: shell running test scripts is now named AM_TEST_RUNNER_SHELL
+	This is just a preparatory refactoring for future changes.
+	* configure.ac (AM_TEST_RUNNER_SHELL): New variable, defined to
+	`$SHELL', and AC_SUBST'd.
+	* tests/Makefile.am (LOG_COMPILER): Redefine from $(SHELL) to
+	$(AM_TEST_RUNNER_SHELL).
+	(do_subst): Also substitute `@AM_TEST_RUNNER_SHELL@'.
+	* tests/defs: Adjust to use $AM_TEST_RUNNER_SHELL instead
+	of $CONFIG_SHELL and/or $SHELL, where appropriate.  Minor
+	opportunistic changes.
+	* tests/self-check-explicit-skips.test: Likewise.
+	* tests/self-check-sanity.test: Likewise.
+	* tests/self-check-tap.test: Likewise.
+	* tests/self-check-cleanup.tap: Likewise.
+	* tests/self-check-dir.tap: Likewise.
+	* tests/self-check-env-sanitize.tap: Likewise.
+	* tests/self-check-exit.tap: Likewise.
+	* tests/self-check-me.tap: Likewise.
+	* tests/self-check-reexec.tap: Likewise.
+
 2011-10-07  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
 	parallel-tests: warn on conditional TEST_EXTENSIONS definition

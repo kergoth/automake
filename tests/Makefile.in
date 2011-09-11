@@ -193,6 +193,7 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
+AM_TEST_RUNNER_SHELL = @AM_TEST_RUNNER_SHELL@
 APIVERSION = @APIVERSION@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -293,8 +294,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
-# Run the tests with the shell detected at configure time.
-LOG_COMPILER = $(SHELL)
+# Run the tests with a proper shell detected at configure time.
+LOG_COMPILER = $(AM_TEST_RUNNER_SHELL)
 TEST_EXTENSIONS = .test .tap
 TEST_LOG_COMPILER = $(LOG_COMPILER)
 TAP_LOG_COMPILER = $(LOG_COMPILER)
@@ -1642,6 +1643,7 @@ do_subst = sed \
   -e 's|@build_alias[@]|$(build_alias)|g' \
   -e 's|@APIVERSION[@]|$(APIVERSION)|g' \
   -e 's|@PATH_SEPARATOR[@]|$(PATH_SEPARATOR)|g' \
+  -e 's|@AM_TEST_RUNNER_SHELL[@]|$(AM_TEST_RUNNER_SHELL)|g' \
   -e 's|@SHELL[@]|$(SHELL)|g' \
   -e 's|@PERL[@]|$(PERL)|g' \
   -e 's|@EGREP[@]|$(EGREP)|g' \

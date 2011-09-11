@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Run the tests with the shell detected at configure time.
-LOG_COMPILER = $(SHELL)
+# Run the tests with a proper shell detected at configure time.
+LOG_COMPILER = $(AM_TEST_RUNNER_SHELL)
 
 TEST_EXTENSIONS = .test .tap
 TEST_LOG_COMPILER = $(LOG_COMPILER)
@@ -133,6 +133,7 @@ do_subst = sed \
   -e 's|@build_alias[@]|$(build_alias)|g' \
   -e 's|@APIVERSION[@]|$(APIVERSION)|g' \
   -e 's|@PATH_SEPARATOR[@]|$(PATH_SEPARATOR)|g' \
+  -e 's|@AM_TEST_RUNNER_SHELL[@]|$(AM_TEST_RUNNER_SHELL)|g' \
   -e 's|@SHELL[@]|$(SHELL)|g' \
   -e 's|@PERL[@]|$(PERL)|g' \
   -e 's|@EGREP[@]|$(EGREP)|g' \

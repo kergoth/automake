@@ -63,7 +63,7 @@ cd ..
 chmod 000 $dir/sub/* $dir/file $dir/symlink
 chmod 000 $dir/sub $dir
 command_ok_ "pre-cleanup can deal with null-perms testdir" \
-            $SHELL -c  '. ./defs' dummy.test
+            $AM_TEST_RUNNER_SHELL -c  '. ./defs' dummy.test
 command_ok_ "pre-cleanup removed null-perms testdir" \
             eval 'test ! -f $dir && test ! -d $dir && test ! -r $dir'
 
@@ -72,7 +72,7 @@ do_clean
 # Check that post-test cleanup works also with directories with
 # "null" permissions, and containing broken symlinks.
 command_ok_ "post-cleanup can deal with null-perms testdir" \
-            $SHELL -c  '
+            $AM_TEST_RUNNER_SHELL -c  '
   stderr_fileno_=2
   . ./defs || Exit 1
   set -e
@@ -108,7 +108,7 @@ if test $have_symlinks = yes; then
   cd ..
 
   command_ok_ "pre-cleanup with testdir with zero-perms symlinks" \
-               $SHELL -c '. ./defs' dummy.test
+               $AM_TEST_RUNNER_SHELL -c '. ./defs' dummy.test
   ls -l # For debugging.
   command_ok_ "pre-cleanup chmod doesn't follow symlinks to files" \
                eval 'ls -l file | grep "^----------.*file"'
@@ -116,7 +116,7 @@ if test $have_symlinks = yes; then
               eval 'ls -ld dir | grep "^d---------.*dir"'
 
   command_ok_ "post-cleanup with testdir with zero-perms symlinks" \
-              $SHELL -c '
+              $AM_TEST_RUNNER_SHELL -c '
     ocwd=`pwd` || exit 1
     stderr_fileno_=2
     . ./defs || Exit 1
@@ -142,7 +142,8 @@ do_clean
 # or when receiving a signal.
 
 for st in 1 2 3 10 77 99 126 127 130 255; do
-  command_ok_ "exit trap doesn't clobber exit status $st" not $SHELL -c "
+  command_ok_ "exit trap doesn't clobber exit status $st" \
+              not $AM_TEST_RUNNER_SHELL -c "
     stderr_fileno_=2
     . ./defs
     : > foo
@@ -158,7 +159,8 @@ for sig in 1 2 3 9 13 15; do
     skip_row_ 2 -r "signal $sig seems blocked"
     continue
   fi
-  command_ok_ "exit trap doesn't clobber signal $sig" not $SHELL -c "
+  command_ok_ "exit trap doesn't clobber signal $sig" \
+              not $AM_TEST_RUNNER_SHELL -c "
     stderr_fileno_=2
     . ./defs
     : > foo

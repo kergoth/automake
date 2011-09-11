@@ -30,7 +30,7 @@ show_stderr ()
 
 AM_TESTS_REEXEC=no; export AM_TESTS_REEXEC
 
-if $SHELL -c '. ../defs' dummy.test 2>stderr; then
+if $AM_TEST_RUNNER_SHELL -c '. ../defs' dummy.test 2>stderr; then
   show_stderr
   Exit 1
 else
@@ -39,7 +39,7 @@ else
 fi
 
 sed 's|^testsrcdir=.*|testsrcdir=foo|' ../defs-static > defs-static
-if $SHELL -c '. ../defs' dummy.test 2>stderr; then
+if $AM_TEST_RUNNER_SHELL -c '. ../defs' dummy.test 2>stderr; then
   show_stderr
   Exit 1
 else
@@ -48,7 +48,7 @@ else
 fi
 
 sed 's|^testbuilddir=.*|testbuilddir=foo|' ../defs-static > defs-static
-if $SHELL -c '. ../defs' dummy.test 2>stderr; then
+if $AM_TEST_RUNNER_SHELL -c '. ../defs' dummy.test 2>stderr; then
   show_stderr
   Exit 1
 else
@@ -66,7 +66,7 @@ env \
   top_builddir=bad-dir top_srcdir=bad-dir \
   abs_builddir=bad-dir abs_srcdir=bad-dir \
   abs_top_builddir=bad-dir abs_top_srcdir=bad-dir \
-  $SHELL -c  '. ../defs && echo "!OK!" > ../foo' dummy.test
+  $AM_TEST_RUNNER_SHELL -c  '. ../defs && echo "!OK!" > ../foo' dummy.test
 $FGREP '!OK!' foo
 
 :
