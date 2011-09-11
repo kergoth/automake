@@ -1,5 +1,23 @@
 2011-10-17  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
+	tests: remove obsolete uses of $sh_errexit_works
+	After the last changes, configure will ensure that the shell
+	selected to run the test scripts can correctly propagate exit
+	status to the exit trap when `set -e' is in effect.
+	* configure.ac (sh_errexit_works): Do not AC_SUBST it anymore.
+	* tests/defs-static.in (sh_errexit_works): Do not initialize from
+	the AC_SUBST value anymore.
+	* tests/Makefile.am (do_subst): Do not substitute it anymore.
+	* tests/defs (trap): Trap the EXIT signal unconditionally.
+	* tests/self-check-explicit-skips.test: Do not skip the test if
+	`$sh_errexit_works' is != "yes", this check doesn't make sense
+	anymore.
+	* tests/self-check-cleanup.tap: Likewise.
+	* tests/self-check-exit.tap: Assume the exit trap is always
+	installed by ./defs.
+
+2011-10-17  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
 	configure: search a sturdy POSIX shell to be used in the testsuite
 	* configure.ac: Add code (partially inspired to checks in gnulib's
 	`tests/init.sh') to search for a good-enough, not-buggy POSIX/XSI

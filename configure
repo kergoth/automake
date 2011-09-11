@@ -568,7 +568,6 @@ PACKAGE_URL='http://www.gnu.org/software/automake/'
 ac_unique_file="automake.in"
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
-sh_errexit_works
 AM_TEST_RUNNER_SHELL
 am_candidate_sh
 FGREP
@@ -3146,10 +3145,6 @@ else
 $as_echo "$as_me: will use $AM_TEST_RUNNER_SHELL as the testsuite shell" >&6;}
 fi
 
-
-
-# FIXME: remove soon
-sh_errexit_works=yes
 
 
 ## ---------------------- ##

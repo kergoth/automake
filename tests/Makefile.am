@@ -145,7 +145,6 @@ do_subst = sed \
   -e 's|@am_AUTORECONF[@]|$(am_AUTORECONF)|g' \
   -e 's|@am_AUTOHEADER[@]|$(am_AUTOHEADER)|g' \
   -e 's|@am_AUTOUPDATE[@]|$(am_AUTOUPDATE)|g' \
-  -e 's|@sh_errexit_works[@]|$(sh_errexit_works)|g' \
   -e 's|@configure_input[@]|Generated from $@.in.  DO NOT EDIT BY HAND!|'
 
 defs-static: defs-static.in
