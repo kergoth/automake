@@ -1,5 +1,13 @@
 2011-10-17  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
+	configure: search a sturdy POSIX shell to be used in the testsuite
+	* configure.ac: Add code (partially inspired to checks in gnulib's
+	`tests/init.sh') to search for a good-enough, not-buggy POSIX/XSI
+	shell to be used in our testsuite.  Accordingly AC_SUBSTitute the
+	variable `AM_TEST_RUNNER_SHELL'.
+
+2011-10-17  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
 	tests: shell running test scripts is now named AM_TEST_RUNNER_SHELL
 	This is just a preparatory refactoring for future changes.
 	* configure.ac (AM_TEST_RUNNER_SHELL): New variable, defined to

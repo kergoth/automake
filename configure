@@ -570,6 +570,7 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 sh_errexit_works
 AM_TEST_RUNNER_SHELL
+am_candidate_sh
 FGREP
 EGREP
 GREP
@@ -668,7 +669,8 @@ enable_silent_rules
 '
       ac_precious_vars='build_alias
 host_alias
-target_alias'
+target_alias
+AM_TEST_RUNNER_SHELL'
 
 
 # Initialize some variables set by options.
@@ -1291,6 +1293,13 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-silent-rules   less verbose build output (undo: `make V=1')
   --disable-silent-rules  verbose build output (undo: `make V=0')
+
+Some influential environment variables:
+  AM_TEST_RUNNER_SHELL
+              a sturdy POSIX shell for our testsuite
+
+Use these variables to override the choices made by `configure' or to help
+it to find libraries and programs with nonstandard names/locations.
 
 Report bugs to <bug-automake@gnu.org>.
 GNU Automake home page: <http://www.gnu.org/software/automake/>.
@@ -2619,7 +2628,10 @@ case $build in
 esac
 
 
-# Test for things needed by the test suite.
+## ------------------------------------------- ##
+##  Test for things needed by the test suite.  ##
+## ------------------------------------------- ##
+
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for grep that handles long lines and -e" >&5
 $as_echo_n "checking for grep that handles long lines and -e... " >&6; }
 if ${ac_cv_path_GREP+:} false; then :
@@ -2818,36 +2830,331 @@ $as_echo "$ac_cv_path_FGREP" >&6; }
 
 
 
-# Shell used to run our test scripts.  The same as $SHELL/$CONFIG_SHELL
-# for the moment.
-AM_TEST_RUNNER_SHELL=$SHELL
 
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $SHELL has working 'set -e' with exit trap" >&5
-$as_echo_n "checking whether $SHELL has working 'set -e' with exit trap... " >&6; }
-if ${am_cv_sh_errexit_works+:} false; then :
+
+
+# AM_CHECK_CANDIDATE_TEST_SHELL(SHELL-PATH)
+# -----------------------------------------
+#
+# Check if the given shell is good enough to run our test scripts.
+# Inspired to gnulib's `tests/init.sh'.
+#
+# We require POSIX and XSI features (e.g., `$(...)' for command
+# substitutions, `$((...))' for shell arithmetic, and support for
+# ${var#...} and ${var%...} parameter expansions).
+#
+# We require that the shell can correctly trap EXIT when `set -e' is in
+# effect (OSF1/Tru64 sh failed to do so, see commit v1.10b-52-g9fe8259).
+#
+# We also prefer shells that, when `set -x' is in effect, do not also
+# redirect traces upon stderr redirections.  For example,
+#  $ set -x; echo x 2>file
+# would emit "+ echo x" into file with older zsh versions.  Similarly,
+#   $ set -x; P=1 true 2>file
+# would emit "P=1" into file with /usr/xpg4/bin/sh from Solaris 10 and
+# /bin/sh from SunOS 5.11 and OpenBSD 4.7.
+#
+# Finally, we look for weird bugs and portability problems mentioned in
+# the Autoconf manual, and reject shells that suffers from them. (TODO)
+#
+# Use `$am_score' to indicate the degree of acceptability of the shell.
+# A score of "10" means that the shell is good enough for our needs;
+# a score of "9" means that the shell has some minor bugs or limitation,
+# but is still (barely) acceptable for our uses.  Any other score means
+# that the shell is broken or unfit.
+#
+
+
+# These messages only goes to the config.log file.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: will now look for a sturdy POSIX shell, for our testsuite" >&5
+$as_echo "$as_me: will now look for a sturdy POSIX shell, for our testsuite" >&6;}
+
+am_bourne_compatible="# Be more Bourne compatible
+DUALCASE=1; export DUALCASE # for MKS sh
+if test -n \"\${ZSH_VERSION+set}\" && (emulate sh) >/dev/null 2>&1; then :
+  emulate sh
+  NULLCMD=:
+  # Pre-4.2 versions of Zsh do word splitting on \${1+\"\$@\"}, which
+  # is contrary to our usage.  Disable this feature.
+  alias -g '\${1+\"\$@\"}'='\"\$@\"'
+  setopt NO_GLOB_SUBST
+else
+  case \`(set -o) 2>/dev/null\` in #(
+  *posix*) :
+    set -o posix ;; #(
+  *) :
+     ;;
+esac
+fi
+
+"
+if ${ac_cv_AM_TEST_RUNNER_SHELL+:} false; then :
   $as_echo_n "(cached) " >&6
 else
-  if $SHELL -ec "trap 'exit \$?' 0; (exit 77); exit 77"; test $? = 77
-then
-  am_cv_sh_errexit_works=yes
+  if test "$AM_TEST_RUNNER_SHELL"; then
+    # Let the user override it.
+    ac_cv_AM_TEST_RUNNER_SHELL=$AM_TEST_RUNNER_SHELL
+  else
+    ac_cv_AM_TEST_RUNNER_SHELL=no
+    am_candidate_shells=${CONFIG_SHELL-}
+    # For the benefit of Solaris.
+    am_PATH=$PATH$PATH_SEPARATOR/usr/xpg4/bin$PATH_SEPARATOR/usr/xpg6/bin
+    for am_sh in sh sh5 dash ash bash zsh ksh pdksh; do
+      # Extract the first word of "$am_sh", so it can be a program name with args.
+set dummy $am_sh; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_am_candidate_sh+:} false; then :
+  $as_echo_n "(cached) " >&6
 else
-  am_cv_sh_errexit_works=no
-fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $am_cv_sh_errexit_works" >&5
-$as_echo "$am_cv_sh_errexit_works" >&6; }
-if test $am_cv_sh_errexit_works = no; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: \`${MAKE-make} check' will leave leftover directories tests/*.dir" >&5
-$as_echo "$as_me: WARNING: \`${MAKE-make} check' will leave leftover directories tests/*.dir" >&2;}
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: you can clean them up manually using \`${MAKE-make} clean' or" >&5
-$as_echo "$as_me: WARNING: you can clean them up manually using \`${MAKE-make} clean' or" >&2;}
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: \`cd tests && ${MAKE-make} clean-local-check'" >&5
-$as_echo "$as_me: WARNING: \`cd tests && ${MAKE-make} clean-local-check'" >&2;}
+  case $am_candidate_sh in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_am_candidate_sh="$am_candidate_sh" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $am_PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_am_candidate_sh="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
   fi
-sh_errexit_works=$am_cv_sh_errexit_works
+done
+  done
+IFS=$as_save_IFS
 
+  ;;
+esac
+fi
+am_candidate_sh=$ac_cv_path_am_candidate_sh
+if test -n "$am_candidate_sh"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $am_candidate_sh" >&5
+$as_echo "$am_candidate_sh" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+      if test -n "$am_candidate_sh"; then
+        am_candidate_shells="$am_candidate_shells $am_candidate_sh"
+      fi
+
+      # Must nullify these in order not to interfere with the checks in
+      # the next loop.
+      { am_candidate_sh=; unset am_candidate_sh;}
+      { ac_cv_path_am_candidate_sh=; unset ac_cv_path_am_candidate_sh;}
+    done
+    { am_PATH=; unset am_PATH;} # Not required anymore
+    for am_sh in $am_candidate_shells; do
+      am_score=0
+      am_score=10
+  while :; do
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $am_sh supports \$(cmd)" >&5
+$as_echo_n "checking whether $am_sh supports \$(cmd)... " >&6; }
+  if { $am_sh -c "$am_bourne_compatible
+test \"\$(echo x)\" = x
+test \$? -eq 0 || exit 1
+# Use 77 to indicate success (rather than 0), in case some shell
+# acts like Solaris 10's /bin/sh, exiting successfully on some
+# syntax errors.
+exit 77" >&5 2>&1; test $? -eq 77; }
+  then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+    am_score=1; break
+  fi
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $am_sh supports \$((expr))" >&5
+$as_echo_n "checking whether $am_sh supports \$((expr))... " >&6; }
+  if { $am_sh -c "$am_bourne_compatible
+test \$((1 + 2 * 3)) = 7
+test \$? -eq 0 || exit 1
+# Use 77 to indicate success (rather than 0), in case some shell
+# acts like Solaris 10's /bin/sh, exiting successfully on some
+# syntax errors.
+exit 77" >&5 2>&1; test $? -eq 77; }
+  then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+    am_score=1; break
+  fi
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $am_sh supports \${var#glob}" >&5
+$as_echo_n "checking whether $am_sh supports \${var#glob}... " >&6; }
+  if { $am_sh -c "$am_bourne_compatible
+v=a/b/c; test \${v#*/} = b/c
+test \$? -eq 0 || exit 1
+# Use 77 to indicate success (rather than 0), in case some shell
+# acts like Solaris 10's /bin/sh, exiting successfully on some
+# syntax errors.
+exit 77" >&5 2>&1; test $? -eq 77; }
+  then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+    am_score=1; break
+  fi
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $am_sh supports \${var##glob}" >&5
+$as_echo_n "checking whether $am_sh supports \${var##glob}... " >&6; }
+  if { $am_sh -c "$am_bourne_compatible
+v=a/b/c; test \${v##*/} = c
+test \$? -eq 0 || exit 1
+# Use 77 to indicate success (rather than 0), in case some shell
+# acts like Solaris 10's /bin/sh, exiting successfully on some
+# syntax errors.
+exit 77" >&5 2>&1; test $? -eq 77; }
+  then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+    am_score=1; break
+  fi
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $am_sh supports \${var%glob}" >&5
+$as_echo_n "checking whether $am_sh supports \${var%glob}... " >&6; }
+  if { $am_sh -c "$am_bourne_compatible
+v=a.b.c; test \${v%.*} = a.b
+test \$? -eq 0 || exit 1
+# Use 77 to indicate success (rather than 0), in case some shell
+# acts like Solaris 10's /bin/sh, exiting successfully on some
+# syntax errors.
+exit 77" >&5 2>&1; test $? -eq 77; }
+  then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+    am_score=1; break
+  fi
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $am_sh supports \${var%%glob}" >&5
+$as_echo_n "checking whether $am_sh supports \${var%%glob}... " >&6; }
+  if { $am_sh -c "$am_bourne_compatible
+v=a.b.c; test \${v%%.*} = a
+test \$? -eq 0 || exit 1
+# Use 77 to indicate success (rather than 0), in case some shell
+# acts like Solaris 10's /bin/sh, exiting successfully on some
+# syntax errors.
+exit 77" >&5 2>&1; test $? -eq 77; }
+  then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+    am_score=1; break
+  fi
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $am_sh \"set -e\" preserves exit traps" >&5
+$as_echo_n "checking whether $am_sh \"set -e\" preserves exit traps... " >&6; }
+  if { $am_sh -c "$am_bourne_compatible
+set -e; trap 'exit \$?' 0; (exit 77); exit 77
+test \$? -eq 0 || exit 1
+# Use 77 to indicate success (rather than 0), in case some shell
+# acts like Solaris 10's /bin/sh, exiting successfully on some
+# syntax errors.
+exit 77" >&5 2>&1; test $? -eq 77; }
+  then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+    am_score=1; break
+  fi
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether $am_sh \"set -x\" corrupts stderr" >&5
+$as_echo_n "checking whether $am_sh \"set -x\" corrupts stderr... " >&6; }
+  if { $am_sh -c "$am_bourne_compatible
+(set -x; P=1 true 2>&3) 3>&1 2>/dev/null | grep P=1
+test \$? -eq 0 || exit 1
+# Use 77 to indicate success (rather than 0), in case some shell
+# acts like Solaris 10's /bin/sh, exiting successfully on some
+# syntax errors.
+exit 77" >&5 2>&1; test $? -eq 77; }
+  then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+    am_score=9
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+  fi
+
+    break
+  done
+      if test $am_score -eq 9; then
+        # The shell is barely acceptable for our needs.  We might
+        # still find one that is even better, so continue looking.
+        { $as_echo "$as_me:${as_lineno-$LINENO}: shell $am_sh is acceptable, but we might do better" >&5
+$as_echo "$as_me: shell $am_sh is acceptable, but we might do better" >&6;}
+        ac_cv_AM_TEST_RUNNER_SHELL=$am_sh
+      elif test $am_score -eq 10; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: shell $am_sh is good enough, stop looking" >&5
+$as_echo "$as_me: shell $am_sh is good enough, stop looking" >&6;}
+        ac_cv_AM_TEST_RUNNER_SHELL=$am_sh
+        break
+      fi
+    done
+  fi
+  AM_TEST_RUNNER_SHELL=$ac_cv_AM_TEST_RUNNER_SHELL
+fi
+
+
+if test $AM_TEST_RUNNER_SHELL = no; then
+  { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "no POSIX shell found that is good enough to be used in our testsuite
+See \`config.log' for more details" "$LINENO" 5; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: will use $AM_TEST_RUNNER_SHELL as the testsuite shell" >&5
+$as_echo "$as_me: will use $AM_TEST_RUNNER_SHELL as the testsuite shell" >&6;}
+fi
+
+
+
+# FIXME: remove soon
+sh_errexit_works=yes
+
+
+## ---------------------- ##
+##  Create output files.  ##
+## ---------------------- ##
 
 ac_config_files="$ac_config_files Makefile doc/Makefile lib/Automake/Makefile lib/Automake/tests/Makefile lib/Makefile lib/am/Makefile m4/Makefile tests/Makefile"
 
