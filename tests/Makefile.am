@@ -117,10 +117,7 @@ aclocal5.test \
 aclocal6.test \
 aclocal7.test \
 aclocal8.test \
-aclocal9.test \
 acloca10.test \
-acloca11.test \
-acloca12.test \
 acloca13.test \
 acloca14.test \
 acloca15.test \
@@ -132,13 +129,10 @@ acloca20.test \
 acloca21.test \
 acloca22.test \
 acloca23.test \
-aclocal-acdir.test \
 aclocal-print-acdir.test \
-aclocal-path.test \
 aclocal-path-install.test \
 aclocal-path-install-serial.test \
-aclocal-path-nonexistent.test \
-aclocal-path-precedence.test \
+aclocal-search-path.test \
 acoutnoq.test \
 acoutpt.test \
 acoutpt2.test \
@@ -396,8 +390,6 @@ depend5.test \
 depend6.test \
 deprecated-acinit.test \
 destdir.test \
-dirlist.test \
-dirlist2.test \
 discover.test \
 dist-included-parent-dir.test \
 distcleancheck.test \

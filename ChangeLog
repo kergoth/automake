@@ -1,3 +1,15 @@
+2011-09-24  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
+	tests: reorganize and extend tests on aclocal search path extension
+	* tests/aclocal-search-path.test: New test, supersedes and
+	subsumes ...
+	* tests/aclocal9.test, tests/acloca11.test, tests/acloca12.test,
+	tests/aclocal-acdir.test, tests/aclocal-path-nonexistent.test,
+	tests/aclocal-path-precedence.test, tests/aclocal-path.test,
+	tests/dirlist.test, tests/dirlist2.test: ... these ones, which
+	have accordingly been removed.
+	* tests/Makefile.am (TESTS): Update.
+
 2011-09-22  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
 	tests: fix tests on aclocal search path precedences
