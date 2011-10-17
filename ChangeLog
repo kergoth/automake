@@ -1,5 +1,11 @@
 2011-10-17  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
+	test defs: fix indentation (cosmetic change)
+	* tests/defs (exit trap): Fix indentation left botched by
+	previous patch `v1.11-1477-g8564a0d'.
+
+2011-10-17  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
 	tests: remove obsolete uses of $sh_errexit_works
 	After the last changes, configure will ensure that the shell
 	selected to run the test scripts can correctly propagate exit
