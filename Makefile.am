@@ -189,6 +189,7 @@ sc_perl_local_no_parens \
 sc_perl_local \
 sc_AMDEP_TRUE_in_automake_in \
 sc_tests_no_gmake_requirement \
+sc_tests_no_gmake_checking \
 sc_tests_make_without_am_makeflags \
 sc_tests_obsolete_variables \
 sc_tests_plain_make \
@@ -445,6 +446,21 @@ sc_tests_no_gmake_requirement:
 	  exit 1; \
 	fi
 
+## Tests should never check explicitly whether the make program being
+## used in the test suite is indeed GNU make: automake-ng assumes it
+## unconditionally.
+sc_tests_no_gmake_checking:
+	@if grep -E '\b(is|using)_gmake\b' \
+	  $(srcdir)/tests/*.test \
+	  $(srcdir)/tests/*.tap \
+	  $(srcdir)/tests/*.sh \
+	  $(srcdir)/tests/defs \
+	  $(srcdir)/tests/defs-static.in \
+	; then \
+	  echo 'Tests should never explicitly check whether $$MAKE' \
+	       'is GNU make.' 1>&2; \
+	  exit 1; \
+	fi
 
 ## Tests should never call make directly.
 sc_tests_make_without_am_makeflags:

@@ -1,5 +1,50 @@
 2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
+	[ng] tests: no need explicitly check whether $MAKE is GNU make
+	Automake-NG assumes the use of GNU make unconditionally, so test
+	cases should never check explicitly whether the make program
+	being used in the test suite is indeed GNU make.
+	* Makefile.am (sc_tests_no_gmake_checking): New maintainer check.
+	(syntax_check_rules): Add it.
+	* tests/defs (using_gmake): Remove this function.
+	(make_can_chain_suffix_rules): Simplify by always assuming that
+	$MAKE is GNU make.
+	* tests/aclocal4.test: Remove usages of `using_gmake', and, where
+	possible, simplify code and logic by assuming that $MAKE is always
+	GNU make.
+	* tests/check4.test: Likewise.
+	* tests/distcheck-missing-m4.test: Likewise.
+	* tests/distcheck-outdated-m4.test: Likewise.
+	* tests/lex5.test: Likewise.
+	* tests/maken4.test: Likewise.
+	* tests/output6.test: Likewise.
+	* tests/parallel-tests-fork-bomb.test: Likewise.
+	* tests/remake-deleted-m4-file.test: Likewise.
+	* tests/remake-gnulib-add-acsubst.test: Likewise.
+	* tests/remake-gnulib-add-header.test: Likewise.
+	* tests/remake-gnulib-remove-header.test: Likewise.
+	* tests/remake-moved-m4-file.test: Likewise.
+	* tests/remake-renamed-m4-file.test: Likewise.
+	* tests/remake-renamed-m4-macro-and-file.test: Likewise.
+	* tests/remake-renamed-m4-macro.test: Likewise.
+	* tests/remake-subdir-from-subdir.test: Likewise.
+	* tests/remake-subdir.test: Likewise.
+	* tests/remake10a.test: Likewise.
+	* tests/remake10b.test: Likewise.
+	* tests/remake10c.test: Likewise.
+	* tests/remake12.test: Likewise.
+	* tests/remake5.test: Likewise.
+	* tests/remake8a.test: Likewise.
+	* tests/remake8b.test: Likewise.
+	* tests/remake9a.test: Likewise.
+	* tests/remake9b.test: Likewise.
+	* tests/remake9c.test: Likewise.
+	* tests/remake9d.test: Likewise.
+	* tests/subpkg-yacc.test: Likewise.
+	* tests/version7.test: Likewise.
+
+2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
 	[ng] tests: no need to explicitly require GNU make
 	Automake-NG assumes the use of GNU make unconditionally, so
 	test cases should never require GNU make explicitly.
