@@ -1,5 +1,15 @@
 2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
+	[ng] begin: branching automake-ng, from testsuite-work branch
+	This is the starting point of an experimental non-hostile fork
+	of automake, whose generated makefiles will only target GNU
+	make rather than portable make.
+	* README: Update, and add references to and excerpts from the
+	threads and discussions that motivated this fork.
+	* AUTHORS: List myself as the person who started this fork.
+
+2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
 	tests: fix spurious failure in 'color2.test'
 	* tests/color2.test: (expect-make): Add an "expect eof" directive,
 	so that the collected output from the spawned make program will be
