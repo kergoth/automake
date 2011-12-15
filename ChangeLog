@@ -1,5 +1,23 @@
 2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
+	[ng] tests: GNU make doesn't perform VPATH rewrites
+	* tests/parallel-tests8.test: Remove extra hacks that accounted
+	for the possibility of VPATH rewrites, since GNU make performs
+	none.
+	* tests/suffix10.tap: Likewise.
+	* tests/suffix11.tap: Likewise.
+	* tests/suffix12.test: Likewise.
+	* tests/suffix13.test: Likewise.
+	* tests/suffix3.tap: Likewise.
+	* tests/suffix5.test: Likewise.
+	* tests/suffix8.tap: Likewise.
+	* tests/java-compile-run-flat.test: Likewise, and simplify by
+	assuming that the special make variable `$<' is available also
+	in common rules, not only in suffix rules.
+	* tests/java-compile-run-nested.test: Likewise.
+
+2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
 	[ng] test defs: don't unset variables not influential on GNU make
 	* tests/defs (__MKLVL__): Don't unset, it was influential only
 	for BSD make, not GNU make.
