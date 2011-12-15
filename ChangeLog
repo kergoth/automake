@@ -1,5 +1,16 @@
 2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
+	[ng] test defs: don't unset variables not influential on GNU make
+	* tests/defs (__MKLVL__): Don't unset, it was influential only
+	for BSD make, not GNU make.
+	(MAKE_JOBS_FIFO): Likewise.
+	(DMAKE_CHILD): Don't unset, it was influential only for Solaris
+	dmake, not GNU make.
+	(DMAKE_DEF_PRINTED): Likewise.
+	(DMAKE_MAX_JOBS): Likewise.
+
+2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
 	[ng] tests: just assume make can chain suffix rules automatically
 	* Makefile.am (sc_tests_make_can_chain_suffix_rules): New
 	maintainer-check.
