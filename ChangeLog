@@ -1,5 +1,20 @@
 2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
+	[ng] tests: just assume make can chain suffix rules automatically
+	* Makefile.am (sc_tests_make_can_chain_suffix_rules): New
+	maintainer-check.
+	(syntax_check_rules): Add it.
+	* tests/defs (make_can_chain_suffix_rules): Remove this function.
+	* tests/suffix-chain.tap: Remove `make_can_chain_suffix_rules'
+	usages, and, where possible, simplify code and logic by assuming
+	that $MAKE can always chain suffix rules automatically.
+	* tests/suffix3.tap: Likewise.
+	* tests/suffix8.tap: Likewise.
+	* tests/suffix10.tap: Likewise.
+	* tests/suffix11.tap: Likewise.
+
+2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
 	[ng] tests: no need explicitly check whether $MAKE is GNU make
 	Automake-NG assumes the use of GNU make unconditionally, so test
 	cases should never check explicitly whether the make program
