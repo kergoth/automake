@@ -20,7 +20,6 @@
 
 # Please keep this test in sync with sister test maken.test.
 
-required=GNUmake
 . ./defs || Exit 1
 
 mkdir sub

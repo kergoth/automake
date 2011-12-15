@@ -21,7 +21,7 @@
 
 # Test per-target flags.
 
-required="libtool libtoolize pkg-config valac gcc GNUmake"
+required="libtool libtoolize pkg-config valac gcc"
 . ./defs || Exit 1
 
 mkdir src

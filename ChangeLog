@@ -1,5 +1,34 @@
 2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
 
+	[ng] tests: no need to explicitly require GNU make
+	Automake-NG assumes the use of GNU make unconditionally, so
+	test cases should never require GNU make explicitly.
+	* Makefile.am (sc_tests_no_gmake_requirement): New maintainer
+	check.
+	(syntax_check_rules): Add it.
+	* tests/defs (GNUmake): Drop this requirement.
+	* tests/colneq3.test: Drop "GNUmake" requirement.
+	* tests/dollar.test: Likewise.
+	* tests/extra10.test: Likewise.
+	* tests/extra11.test: Likewise.
+	* tests/extra12.test: Likewise.
+	* tests/gnumake.test: Likewise.
+	* tests/lisp8.test: Likewise.
+	* tests/make.test: Likewise.
+	* tests/makej.test: Likewise.
+	* tests/maken2.test: Likewise.
+	* tests/multlib.test: Likewise.
+	* tests/parallel-tests3.test: Likewise.
+	* tests/parallel-tests5.test: Likewise.
+	* tests/remake-subdir-gnu.test: Likewise.
+	* tests/suffix6b.test: Likewise.
+	* tests/vala2.test: Likewise.
+	* tests/vala3.test: Likewise.
+	* tests/vala5.test: Likewise.
+	* tests/yacc6.test: Likewise.
+
+2011-12-15  Stefano Lattarini  <stefano.lattarini@gmail.com>
+
 	[ng] begin: branching automake-ng, from testsuite-work branch
 	This is the starting point of an experimental non-hostile fork
 	of automake, whose generated makefiles will only target GNU
